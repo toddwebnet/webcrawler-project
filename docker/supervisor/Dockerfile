@@ -1,0 +1,73 @@
+ARG PHP_DOCKERFILE_SOURCE=php:7.4-cli
+FROM ${PHP_DOCKERFILE_SOURCE}
+
+
+# Install "PHP Extentions", "libraries", "Software's"
+RUN apt-get update && \
+    apt-get install -y \
+        git \
+        curl \
+        nano \
+        zip \
+        libcurl3-openssl-dev \
+        libonig-dev \
+        libzip-dev \
+        libpng-dev \
+        libicu-dev \
+        libxml2-dev \
+        libpq-dev \
+        libz-dev \
+        libmemcached-dev
+
+#RUN docker-php-ext-install memcached
+RUN pecl install memcached
+
+
+RUN docker-php-ext-install curl
+RUN docker-php-ext-install intl
+RUN docker-php-ext-install json
+RUN docker-php-ext-install xml
+# RUN docker-php-ext-install mbstring
+RUN docker-php-ext-install mysqli
+RUN docker-php-ext-install pgsql
+# RUN docker-php-ext-install sqlite
+# RUN docker-php-ext-install sqlite3
+RUN docker-php-ext-install zip
+RUN docker-php-ext-install bcmath
+RUN docker-php-ext-configure gd \
+  --with-jpeg-dir=/usr/lib \
+  --with-freetype-dir=/usr/include/freetype2 && \
+  docker-php-ext-install gd
+RUN docker-php-ext-install pdo_mysql
+
+
+RUN apt-get install default-mysql-client -y
+RUN apt-get install default-libmysqlclient-dev -y
+
+
+RUN apt-get install -y supervisor
+RUN  apt-get clean
+
+
+RUN docker-php-ext-enable curl
+RUN docker-php-ext-enable intl
+RUN docker-php-ext-enable json
+RUN docker-php-ext-enable xml
+RUN docker-php-ext-enable mysqli
+RUN docker-php-ext-enable pgsql
+RUN docker-php-ext-enable zip
+RUN docker-php-ext-enable bcmath
+RUN docker-php-ext-enable gd
+RUN docker-php-ext-enable pdo_mysq
+
+RUN curl -s http://getcomposer.org/installer | php && \
+    echo "export PATH=${PATH}:/var/www/vendor/bin" >> ~/.bashrc && \
+    mv composer.phar /usr/local/bin/composer
+
+# Source the bash
+RUN . ~/.bashrc
+
+
+COPY supervisord.conf /etc/supervisord.conf
+
+ENTRYPOINT ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisord.conf"]

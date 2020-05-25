@@ -1,0 +1,17 @@
+
+blueberry (pi3)
+ - workspace
+ - cron
+ - supervisor [url, link]
+
+cranberry (pi3)
+  - workspace
+  - supervisor [html]
+
+dewberry (pi3)
+ - adminer
+ - beanstalkd
+
+elderberry (pi)
+ - minio
+ - mysql

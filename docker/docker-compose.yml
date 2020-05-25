@@ -1,0 +1,91 @@
+version: '3'
+
+services:
+
+
+  beanstalkd:
+    build: ./beanstalkd
+    ports:
+      - "11300:11300"
+    privileged: true
+    networks:
+      - network
+
+  workspace:
+    build:
+      context: ${DOCKER_PATH}/workspace
+      args:
+        - PHP_DOCKERFILE_SOURCE=${PHP_DOCKERFILE_SOURCE}
+    volumes:
+      - ${APP_PATH}:/var/www
+    tty: true
+
+  supervisor:
+    build:
+      context: ${DOCKER_PATH}/supervisor
+      args:
+        - PHP_DOCKERFILE_SOURCE=${PHP_DOCKERFILE_SOURCE}
+    volumes:
+      - ${APP_PATH}:/var/www
+    tty: true
+
+  cron:
+    build:
+      context: ${DOCKER_PATH}/cron
+      args:
+        - PHP_DOCKERFILE_SOURCE=${PHP_DOCKERFILE_SOURCE}
+    volumes:
+      - ${APP_PATH}:/var/www
+    tty: true
+
+
+
+  minio:
+    build: ${DOCKER_PATH}/minio
+    ports:
+      - 9000:9000
+    volumes:
+      - ${DATA_PATH_HOST}/mino/data:/export
+      - ${DATA_PATH_HOST}/minio/config:/root/.minio
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    networks:
+      - network
+
+  mysql:
+    build:
+      context: ${DOCKER_PATH}/mysql
+      args:
+        - MYSQL_DOCKERFILE_SOURCE=${MYSQL_DOCKERFILE_SOURCE}
+        - TZ=${TIMEZONE}
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+      - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    ports:
+      - "${MYSQL_PORT}:3306"
+    networks:
+      - network
+
+  adminer:
+    image: adminer
+    environment:
+      - ADMINER_DEFAULT_SERVER=mysql
+    restart: always
+    ports:
+      - 8090:8080
+    networks:
+      - network
+
+volumes:
+  minio:
+    driver: local
+  mysql:
+    driver: ${VOLUMES_DRIVER}
+
+networks:
+  network:
+    driver: ${NETWORKS_DRIVER}
