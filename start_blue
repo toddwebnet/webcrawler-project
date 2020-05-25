@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sleep 5
+./start_workspace
