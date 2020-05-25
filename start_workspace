@@ -1,6 +1,6 @@
 #!/bin/bash
 
-name='workspace'
+name='beanstalkd'
 # path='/Users/jamestodd/stuff/webcrawler-project/docker'
 path='/home/jtodd/webcrawler-project/docker'
 
