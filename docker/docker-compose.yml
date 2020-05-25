@@ -76,7 +76,7 @@ services:
       - ADMINER_DEFAULT_SERVER=mysql
     restart: always
     ports:
-      - 8090:8080
+      - ${ADMINER_PORT}:8080
     networks:
       - network
 
