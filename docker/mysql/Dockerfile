@@ -1,4 +1,4 @@
-ARG MYSQL_DOCKERFILE_SOURCE=mysql:latest
+ARG MYSQL_DOCKERFILE_SOURCE=I_WILL_FAIL
 FROM ${MYSQL_DOCKERFILE_SOURCE}
 
 LABEL maintainer="James Todd<toddwebnet@gmail.com>"
