@@ -41,7 +41,10 @@ services:
 
 
   minio:
-    build: ${DOCKER_PATH}/minio
+    build:
+      context: ${DOCKER_PATH}/minio
+      args:
+        - MINIO_DOCKERFILE_SOURCE=${MINIO_DOCKERFILE_SOURCE}
     ports:
       - 9000:9000
     volumes:
