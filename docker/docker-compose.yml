@@ -19,6 +19,8 @@ services:
     volumes:
       - ${APP_PATH}:/var/www
     tty: true
+    networks:
+      - network
 
   supervisor:
     build:
@@ -27,7 +29,10 @@ services:
         - PHP_DOCKERFILE_SOURCE=${PHP_DOCKERFILE_SOURCE}
     volumes:
       - ${APP_PATH}:/var/www
+      - ./supervisor/supervisord.d:/etc/supervisord.d
     tty: true
+    networks:
+      - network
 
   cron:
     build:
@@ -36,8 +41,10 @@ services:
         - PHP_DOCKERFILE_SOURCE=${PHP_DOCKERFILE_SOURCE}
     volumes:
       - ${APP_PATH}:/var/www
+      - ./cron/crontab:/etc/cron.d
     tty: true
-
+    networks:
+      - network
 
 
   minio:

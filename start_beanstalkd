@@ -1,0 +1,13 @@
+#!/bin/bash
+
+name='workspace'
+# path='/Users/jamestodd/stuff/webcrawler-project/docker'
+path='/home/jtodd/webcrawler-project/docker'
+
+# [[ $(docker ps -f "name=$name" --format '{{.Names}}') == $name ]] ||
+
+docker ps -f "name=$name" | grep $name &> /dev/null
+if [ $? == 0 ]; then
+  cd $path && docker-compose stop $name
+fi
+cd $path && docker-compose up -d $name
