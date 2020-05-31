@@ -1,0 +1,6 @@
+#!/bin/bash
+
+name='workspace'
+path='/home/jtodd/webcrawler-project/docker'
+
+cd $path && docker-compose exec  $name bash
