@@ -1,0 +1,5 @@
+#!/bin/bash
+
+path='/home/jtodd/webcrawler-project/docker'
+
+cd $path && docker-compose stop
