@@ -1,0 +1,1 @@
+docker-compose up -d mysql wc-api php-fpm workspace

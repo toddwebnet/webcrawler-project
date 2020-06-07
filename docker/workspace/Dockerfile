@@ -1,6 +1,8 @@
 ARG PHP_DOCKERFILE_SOURCE=I_WILL_FAIL
 FROM ${PHP_DOCKERFILE_SOURCE}
 
+ENV DEBIAN_FRONTEND noninteractive
+
 
 # Install "PHP Extentions", "libraries", "Software's"
 RUN apt-get update && \
