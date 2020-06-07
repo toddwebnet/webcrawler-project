@@ -1,3 +1,6 @@
 [submodule "src/webCrawler"]
 	path = src/webCrawler
 	url = git@github.com:toddwebnet/webCrawler.git
+[submodule "src/interpreter"]
+	path = src/interpreter
+	url = git@github.com:toddwebnet/webcrawler-interpreter.git
